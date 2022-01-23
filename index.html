@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wordle Solver</title>
+</head>
+<body>
+<h1>Joe's Wordle Solver</h1>
+
+<form>
+    Exclude: <input name="exclude" id="exclude"/> (Enter letters you know are NOT part of the solution)<br/>
+    Include: <input name="include" id="include"/> (Enter letters you know are in the solution, but not known position)<br/>
+    Known: <input name="known" id="known" value="?????"/> (Enter letters you know the position of. use ? for unknown positions)<br/>
+</form>
+
+<button onclick="loadWords()">Find Words</button>
+
+<span id="output"></span>
+
+</body>
+<script>
+    function loadWords() {
+        console.log("words");
+        let exclude = document.getElementById("exclude").value.toLowerCase();
+        let include = document.getElementById("include").value.toLowerCase();
+        let known = document.getElementById("known").value.toLowerCase().replaceAll("?", ".");
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+            let words = this.responseText.split('\n')
+                .map(csvLine => csvLine.split(",")[1])
+                .filter(word => word)
+                .filter(word => !known || known.length === 0 || word.match(new RegExp("^"+known+"$")))
+                .filter(word => !include || include.length === 0 || word.match(new RegExp("["+include+"]+")))
+                .filter(word => !exclude || exclude.length === 0 || !word.match(new RegExp("["+exclude+"]+")))
+                .splice(0,100);
+            document.getElementById("output").innerText = words;
+        }
+        xhttp.open("GET", "data/wordle.csv", true);
+        xhttp.send();
+    }
+</script>
+</html>
