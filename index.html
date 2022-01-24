@@ -30,7 +30,7 @@
                 .map(csvLine => csvLine.split(",")[1])
                 .filter(word => word)
                 .filter(word => !known || known.length === 0 || word.match(new RegExp("^"+known+"$")))
-                .filter(word => !include || include.length === 0 || word.match(new RegExp("["+include+"]+")))
+                .filter(word => !include || include.length === 0 || include.split("").every(letter => word.includes(letter)))
                 .filter(word => !exclude || exclude.length === 0 || !word.match(new RegExp("["+exclude+"]+")))
                 .splice(0,100);
             document.getElementById("output").innerText = words;
