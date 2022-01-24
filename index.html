@@ -27,10 +27,10 @@
     }
     
     function loadWords() {
-        get('data/wordle.csv', setWordList);
+        get('data/wordle.csv', displayMatchingCandidateWords);
     }
     
-    function setWordList() {
+    function displayMatchingCandidateWords() {
         document.getElementById('output').innerHTML = csvToListItems(
             this.responseText,
             document.getElementById('exclude').value.toLowerCase(),
