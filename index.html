@@ -14,13 +14,18 @@
 </form>
 
 <button onclick="loadWords()">Find Words</button>
+<button onclick="reset()">Reset</button>
 
 <span id="output"></span>
 
 </body>
 <script>
+    function reset() {
+        ["exclude", "include"].forEach(it => document.getElementById(it).value = "");
+        document.getElementById("known").value = "?????";
+    }
+    
     function loadWords() {
-        console.log("words");
         let exclude = document.getElementById("exclude").value.toLowerCase();
         let include = document.getElementById("include").value.toLowerCase();
         let known = document.getElementById("known").value.toLowerCase().replaceAll("?", ".");
