@@ -10,7 +10,7 @@
 <form>
     Exclude: <input name="exclude" id="exclude"/> (Enter letters you know are NOT part of the solution)<br/>
     Include: <input name="include" id="include"/> (Enter letters you know are in the solution, but not known position)<br/>
-    Known: <input name="known" id="known" value="?????"/> (Enter letters you know the position of. use ? for unknown positions)<br/>
+    Known: <input name="known" id="known" value="?????"/> (Enter letters you know the position of. Use ? for unknown positions. Use [^xyz] in a position where you know the letter in that position isn't x, y, or z)<br/>
 </form>
 
 <button onclick="loadWords()">Find Words</button>
