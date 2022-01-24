@@ -8,8 +8,8 @@
 <h1>Joe's Wordle Solver</h1>
 
 <form>
-    Exclude: <input name="exclude" id="exclude"/> (Enter letters you know are NOT part of the solution)<br/>
-    Include: <input name="include" id="include"/> (Enter letters you know are in the solution, but not known position)<br/>
+    Exclude: <input name="exclude" id="exclude" placeholder="letters to exclude"/> (Enter letters you know are NOT part of the solution)<br/>
+    Include: <input name="include" id="include" placeholder="letters to include"/> (Enter letters you know are in the solution, but not known position)<br/>
     Known: <input name="known" id="known" value="?????"/> (Enter letters you know the position of. Use ? for unknown positions. 
     Use [^xyz] in a position where you know the letter in that position isn't x, y, or z). For example, enter n??[^ox]? when you know the word starts with N and the second to last letter is niether O nor X<br/>
 </form>
@@ -34,11 +34,10 @@
         xhttp.onload = function() {
             let words = this.responseText.split('\n')
                 .map(csvLine => csvLine.split(",")[1])
-                .filter(word => word)
-                .filter(word => !known || known.length === 0 || word.match(new RegExp("^"+known+"$")))
-                .filter(word => !include || include.length === 0 || include.split("").every(letter => word.includes(letter)))
-                .filter(word => !exclude || exclude.length === 0 || exclude.split("").every(letter => !word.includes(letter)))
-                .splice(0,1000)
+                .filter(word => !!word)
+                .filter(word => !known || word.match(new RegExp(known)))
+                .filter(word => include.split("").every(letter => word.includes(letter)))
+                .filter(word => exclude.split("").every(letter => !word.includes(letter)))
                 .map(word => "<li>" + word + "</li>")
                 .sort();
             document.getElementById("output").innerHTML = words.join("\n");
