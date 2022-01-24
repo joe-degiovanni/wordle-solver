@@ -24,6 +24,7 @@
     function reset() {
         ['exclude', 'include'].forEach(it => document.getElementById(it).value = '');
         document.getElementById('known').value = '?????';
+        document.getElementById('output').innerHTML = '';
     }
     
     function loadWords() {
