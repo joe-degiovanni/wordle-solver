@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Waffle Solver</title>
+    <style>
+        body {
+            width: 100%;
+            font-family: Lato, sans-serif;
+            background-color: black;
+            color: white;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .board {
+            margin: auto;
+            max-width: 500px;
+        }
+
+        .row {
+            display: flex;
+        }
+
+        .tile {
+            text-align: center;
+            flex: 5;
+            padding: 20px;
+            margin: 10px;
+            background-color: #222;
+            font-size: 1.6em;
+            font-weight: bolder;
+            border-radius: 10px;
+            border-right: 3px solid #555;
+            border-bottom: 3px solid #555;
+        }
+
+        .correct {
+            background-color: #050;
+        }
+
+        .wrong {
+            background-color: #222;
+        }
+
+        .close {
+            background-color: #aa0;
+        }
+
+        .empty-tile {
+            flex: 5;
+            text-align: center;
+            padding: 20px;
+            margin: 10px;
+        }
+
+        #selected {
+            border: 2px dashed #808;
+        }
+    </style>
+</head>
+<body>
+<h1>Waffle Solver</h1>
+<div class="board">
+    <div class="row">
+        <div class="tile correct">T</div>
+        <div class="tile">T</div>
+        <div class="tile close">T</div>
+        <div class="tile">T</div>
+        <div class="tile correct">T</div>
+    </div>
+    <div class="row">
+        <div class="tile">T</div>
+        <div class="empty-tile"></div>
+        <div class="tile">T</div>
+        <div class="empty-tile"></div>
+        <div class="tile">T</div>
+    </div>
+    <div class="row">
+        <div class="tile">T</div>
+        <div class="tile close">T</div>
+        <div class="tile">T</div>
+        <div class="tile">T</div>
+        <div class="tile">T</div>
+    </div>
+    <div class="row">
+        <div class="tile">T</div>
+        <div class="empty-tile"></div>
+        <div class="tile">T</div>
+        <div class="empty-tile"></div>
+        <div class="tile">T</div>
+    </div>
+    <div class="row">
+        <div class="tile correct">T</div>
+        <div class="tile">T</div>
+        <div class="tile">T</div>
+        <div class="tile close">T</div>
+        <div class="tile correct">T</div>
+    </div>
+</div>
+
+<script>
+    function setSelectedText(letter) {
+        const selected = document.getElementById("selected");
+        if(selected) {
+            selected.innerText = letter.toUpperCase();
+        }
+        // change selected to next tile
+        document.getElementById("selected").removeAttribute("id");
+        const tiles = document.getElementsByClassName("tile");
+        for (var i = 0; i < tiles.length; i++) {
+            if(tiles[i] === selected) {
+                if(i === tiles.length - 1) {
+                    tiles[0].setAttribute("id", "selected");
+                }
+                else {
+                    tiles[i + 1].setAttribute("id", "selected");
+                }
+                break;
+            }
+        }
+    }
+
+    function setSelected() {
+        const previouslySelected = document.getElementById("selected");
+        if(previouslySelected) {
+            previouslySelected.removeAttribute("id");
+        }
+        this.setAttribute("id", "selected");
+    }
+
+    function cycleTileColor() {
+        // if the tile is correct, make it wrong
+        if (this.classList.contains("correct")) {
+            this.classList.remove("correct");
+            this.classList.add("wrong");
+        }
+        // if the tile is close, make it correct
+        else if (this.classList.contains("close")) {
+            this.classList.remove("close");
+            this.classList.add("correct");
+        }
+        // if the tile is wrong, make it close
+        else {
+            this.classList.remove("wrong");
+            this.classList.add("close");
+        }
+    }
+
+
+    function updateOnclicks() {
+        const tiles = document.getElementsByClassName("tile");
+        for (var i = 0; i < tiles.length; i++) {
+            tiles[i].onclick = setSelected;
+        }
+        const selected = document.getElementById("selected");
+        if(selected) {
+            selected.onclick = cycleTileColor;
+        }
+    }
+
+    updateOnclicks();
+
+    document.onclick = updateOnclicks;
+
+    document.onkeypress = function(e) {
+        var key = e.key;
+        if(key.length === 1) {
+            setSelectedText(key);
+        }
+    };
+</script>
+
+</body>
+</html>
