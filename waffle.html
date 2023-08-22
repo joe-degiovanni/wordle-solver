@@ -102,34 +102,6 @@
 </div>
 
 <script>
-    function setSelectedText(letter) {
-        const selected = document.getElementById("selected");
-        if(selected) {
-            selected.innerText = letter.toUpperCase();
-        }
-        // change selected to next tile
-        document.getElementById("selected").removeAttribute("id");
-        const tiles = document.getElementsByClassName("tile");
-        for (var i = 0; i < tiles.length; i++) {
-            if(tiles[i] === selected) {
-                if(i === tiles.length - 1) {
-                    tiles[0].setAttribute("id", "selected");
-                }
-                else {
-                    tiles[i + 1].setAttribute("id", "selected");
-                }
-                break;
-            }
-        }
-    }
-
-    function setSelected() {
-        const previouslySelected = document.getElementById("selected");
-        if(previouslySelected) {
-            previouslySelected.removeAttribute("id");
-        }
-        this.setAttribute("id", "selected");
-    }
 
     function cycleTileColor() {
         // if the tile is correct, make it wrong
@@ -147,31 +119,39 @@
             this.classList.remove("wrong");
             this.classList.add("close");
         }
-        // open the virtual keyboard
-        this.focus();
     }
 
 
     function updateOnclicks() {
         const tiles = document.getElementsByClassName("tile");
         for (var i = 0; i < tiles.length; i++) {
-            tiles[i].onclick = setSelected;
-        }
-        const selected = document.getElementById("selected");
-        if(selected) {
-            selected.onclick = cycleTileColor;
-            selected.setAttribute("contenteditable", "true");
+            tiles[i].onclick = cycleTileColor;
+            tiles[i].setAttribute("contenteditable", "true");
         }
     }
 
     updateOnclicks();
 
-    document.onclick = updateOnclicks;
+    document.onkeyup = function (e) {
+        // find the element currently focused
+        const focused = document.activeElement;
+        // if the focused element is not a tile, do nothing
+        if(focused.classList.contains("tile")) {
+            focused.innerText = e.key.toUpperCase();
 
-    document.onkeypress = function(e) {
-        var key = e.key;
-        if(key.length === 1) {
-            setSelectedText(key);
+            // change focus to next tile
+            const tiles = document.getElementsByClassName("tile");
+            for (var i = 0; i < tiles.length; i++) {
+                if(tiles[i] === focused) {
+                    if(i === tiles.length - 1) {
+                        tiles[0].focus();
+                    }
+                    else {
+                        tiles[i + 1].focus();
+                    }
+                    break;
+                }
+            }
         }
     };
 </script>
