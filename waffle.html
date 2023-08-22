@@ -147,6 +147,8 @@
             this.classList.remove("wrong");
             this.classList.add("close");
         }
+        // open the virtual keyboard
+        this.focus();
     }
 
 
@@ -158,8 +160,6 @@
         const selected = document.getElementById("selected");
         if(selected) {
             selected.onclick = cycleTileColor;
-            // open the keyboard on mobile
-            selected.focus();
         }
     }
 
