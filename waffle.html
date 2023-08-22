@@ -158,6 +158,8 @@
         const selected = document.getElementById("selected");
         if(selected) {
             selected.onclick = cycleTileColor;
+            // open the keyboard on mobile
+            selected.focus();
         }
     }
 
